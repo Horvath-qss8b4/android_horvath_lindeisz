@@ -18,8 +18,8 @@ Egy API-ról adatokat vesz le, feldolgozza és megtekinthetővé teszi
 Mindenki a saját branchba dolgozik
 
 echo "# android_horvath_lindeisz" >> README.md
-git init
-git add README.md
+echo "git init"
+echo "git add README.md"
 git commit -m "first commit"
 git branch -M lala-branch/ henrik-branch
 git remote add origin https://github.com/Horvath-qss8b4/android_horvath_lindeisz.git
