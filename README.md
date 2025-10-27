@@ -15,16 +15,12 @@ Egy API-ról adatokat vesz le, feldolgozza és megtekinthetővé teszi
 
 ## Telepítés / Futtatás
 
-Mindenki a saját branchba dolgozik
+Mindenki a main branchba dolgozik
 
 echo "# android_horvath_lindeisz" >> README.md  
 git init  
 git add README.md  
 git commit -m "first commit"  
-git branch -M lala-branch/ henrik-branch  
+git branch -M main
 git remote add origin https://github.com/Horvath-qss8b4/android_horvath_lindeisz.git  
-git push -u origin lala-branch/ henrik-branch  
-…or push an existing repository from the command line  
-git remote add origin https://github.com/Horvath-qss8b4/android_horvath_lindeisz.git  
-git branch -M lala-branch/ henrik-branch  
-git push -u origin lala-branch/ henrik-branch  
+git push -u origin main
