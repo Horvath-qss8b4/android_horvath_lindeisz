@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoinsFragment">
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/txtCoins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kriptók betöltése..."
+            android:textSize="17sp"
+            android:padding="12dp"
+            android:layout_marginTop="24dp"
+            android:lineSpacingExtra="6dp" />
+
+        <Button
+            android:id="@+id/btnBackToNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Back News"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+    </LinearLayout>
+</ScrollView>

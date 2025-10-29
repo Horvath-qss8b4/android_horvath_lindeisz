@@ -1,64 +1,91 @@
 package com.example.financialcoinapp;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CoinsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CoinsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView txtCoins;
 
     public CoinsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CoinsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CoinsFragment newInstance(String param1, String param2) {
-        CoinsFragment fragment = new CoinsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        super(R.layout.fragment_coins);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        txtCoins = view.findViewById(R.id.txtCoins);
+        Button btnBack = view.findViewById(R.id.btnBackToNews);
+
+        btnBack.setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
+
+        loadTopCoins();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_coins, container, false);
+    private void loadTopCoins() {
+        CoinMarketCapApi api = ApiClient.getClient().create(CoinMarketCapApi.class);
+        Call<CmcResponse> call = api.getLatestListings(1, 10, "USD");
+
+        call.enqueue(new Callback<CmcResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<CmcResponse> call, @NonNull Response<CmcResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().data != null) {
+                    SpannableStringBuilder sb = new SpannableStringBuilder();
+                    DecimalFormat df = (DecimalFormat) DecimalFormat.getNumberInstance(Locale.US);
+                    df.applyPattern("#,##0.00");
+
+                    int count = Math.min(4, response.body().data.size());
+                    for (int i = 0; i < count; i++) {
+                        CmcResponse.Coin coin = response.body().data.get(i);
+
+                        String nameLine = coin.name + " (" + coin.symbol + ")";
+                        Double price = null;
+                        if (coin.quote != null && coin.quote.usd != null) price = coin.quote.usd.price;
+
+                        String priceText = price != null ? df.format(price) + " USD" : "—";
+
+                        // Name (bold)
+                        SpannableString nameSpan = new SpannableString(nameLine + "\n");
+                        nameSpan.setSpan(new StyleSpan(Typeface.BOLD), 0, nameLine.length(), 0);
+
+                        // Price (italic)
+                        SpannableString priceSpan = new SpannableString("Ár: " + priceText + "\n\n");
+                        priceSpan.setSpan(new StyleSpan(Typeface.ITALIC), 0, priceSpan.length(), 0);
+
+                        sb.append(nameSpan);
+                        sb.append(priceSpan);
+                    }
+
+                    txtCoins.setText(sb, TextView.BufferType.SPANNABLE);
+                } else {
+                    txtCoins.setText("Hiba: üres vagy hibás válasz az API-tól");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<CmcResponse> call, @NonNull Throwable t) {
+                txtCoins.setText("Hálózati hiba: " + t.getMessage());
+            }
+        });
     }
 }
