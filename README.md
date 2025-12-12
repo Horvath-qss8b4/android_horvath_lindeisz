@@ -24,3 +24,55 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/Horvath-qss8b4/android_horvath_lindeisz.git  
 git push -u origin main
+
+
+## Finnhub – NEWS API JSON struktúra
+
+```text
+FinnhubNewsResponse = [
+    {
+        category: string
+        datetime: number
+        headline: string
+        id: number
+        image: string
+        related: string
+        source: string
+        summary: string
+        url: string
+    }
+]
+
+## CoinMarketCap – NEWS API JSON struktúra
+
+```text
+CoinMarketCapNewsResponse {
+    status: {
+        timestamp: string
+        error_code: number
+        error_message: string | null
+        elapsed: number
+        credit_count: number
+    }
+    data: [
+        {
+            id: number
+            title: string
+            description: string
+            url: string
+            source: string
+            published_at: string
+            thumbnail: string
+            related_coins: [
+                {
+                    id: number
+                    name: string
+                    symbol: string
+                    slug: string
+                }
+            ]
+        }
+    ]
+}
+
+

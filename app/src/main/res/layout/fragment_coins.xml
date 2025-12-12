@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ScrollView azért kell, mert a coin lista hossza változó,
+és kisebb kijelzőn görgethetőnek kell lennie.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!--
+    A LinearLayout tartalmazza a fragment UI elemeit egymás alatt
+    -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!--
+        Coin adatok megjelenítésére szolgáló TextView
+        A szöveget a CoinsFragment dinamikusan tölti fel
+        -->
         <TextView
             android:id="@+id/txtCoins"
             android:layout_width="match_parent"
@@ -19,6 +31,9 @@
             android:layout_marginTop="24dp"
             android:lineSpacingExtra="6dp" />
 
+        <!--
+        Vissza gomb a hírek listájához
+        -->
         <Button
             android:id="@+id/btnBackToNews"
             android:layout_width="match_parent"
@@ -29,3 +44,11 @@
             android:textSize="18sp" />
     </LinearLayout>
 </ScrollView>
+
+    <!--
+    Összefoglalás:
+    - ScrollView biztosítja a görgethetőséget hosszú coin listánál
+    - LinearLayout függőlegesen rendezi az elemeket
+    - TextView dinamikusan kapja az adatokat Java-ból
+    - Button fragmentek közti visszanavigálást indít
+    -->

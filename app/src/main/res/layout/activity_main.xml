@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Ez a konténer szolgál a Fragmentek megjelenítésére.
+A MainActivity ebbe a FrameLayoutba cseréli a Fragmenteket.
+-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
+
+    <!--
+    Összefoglalás:
+    - Fragment konténerként szolgál
+    - A FragmentManager ide tölti be és cseréli a Fragmenteket
+    - Egyszerre mindig egy Fragment látható
+    -->
+
